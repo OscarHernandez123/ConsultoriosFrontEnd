@@ -34,39 +34,17 @@ export async function getDoctorById(doctorId) {
 }
 
 export async function createDoctor(doctorData) {
-    const payload = {
-        fullName: doctorData.fullName || doctorData.name,
-        email: doctorData.email,
-        specialtyId: doctorData.specialtyId,
-        status: (doctorData.status || 'Active').toUpperCase(),
-        profile: {
-            phone: doctorData.phone,
-            bio: "Medical professional" 
-        }
-    };
-    
     const created = await requestJson(API_URL, { 
         method: 'POST', 
-        body: JSON.stringify(payload) 
+        body: JSON.stringify(doctorData) 
     });
     return toDoctor(created);
 }
 
 export async function replaceDoctor(doctorId, doctorData) {
-    const payload = {
-        fullName: doctorData.fullName || doctorData.name,
-        email: doctorData.email,
-        specialtyId: doctorData.specialtyId,
-        status: (doctorData.status || 'Active').toUpperCase(),
-        profile: {
-            phone: doctorData.phone,
-            bio: "Medical professional"
-        }
-    };
-    
     const updated = await requestJson(`${API_URL}/${doctorId}`, { 
         method: 'PUT', 
-        body: JSON.stringify(payload) 
+        body: JSON.stringify(doctorData) 
     });
     return toDoctor(updated);
 }

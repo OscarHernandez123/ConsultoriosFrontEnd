@@ -1077,3 +1077,68 @@ body {
 .btn-apt-complete { background-color: var(--color-blue-light);  color: var(--color-blue); }
 .btn-apt-noshow   { background-color: #fef3c7;                  color: #b45309; }
 .btn-apt-cancel   { background-color: var(--color-error-bg);    color: var(--color-error-fg); }
+
+/* =========================================
+   DASHBOARD REPORTS STYLES
+   ========================================= */
+.reports-section {
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.report-card {
+    flex: 1 1 45%;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin: 20px;
+}
+
+.report-card-title {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.report-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.report-table th {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #edf2f7;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.report-table td {
+    padding: 0.75rem 0;
+    color: #2d3748;
+}
+
+.report-table tbody tr {
+    border-bottom: 1px solid #edf2f7;
+}
+
+.report-table tbody tr:last-child {
+    border-bottom: none; /* Quita la línea del último elemento */
+}
+
+/* Clases de utilidad para los textos */
+.text-danger {
+    color: #e53e3e !important;
+    font-weight: bold;
+}
+
+.text-muted {
+    color: #718096;
+    padding: 1rem 0;
+    text-align: center;
+    font-style: italic;
+}

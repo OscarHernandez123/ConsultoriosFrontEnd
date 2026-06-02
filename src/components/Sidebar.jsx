@@ -26,13 +26,7 @@ function Sidebar() {
                         <NavLink to="/offices">Offices</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/availability">Availability</NavLink>
-                    </li>
-                    <li>
                         <NavLink to="/appointments">Appointments</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/reports">Reports</NavLink>
                     </li>
                 </ul>
             </nav>
