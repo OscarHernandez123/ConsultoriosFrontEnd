@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# Online Medical Health Tracker (OMHT) - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Interfaz de usuario (SPA) desarrollada en React para el sistema Online Medical Health Tracker (OMHT), un proyecto académico para la Universidad del Magdalena. Este frontend proporciona una experiencia de usuario fluida e interactiva para la gestión integral de consultorios médicos, personal, pacientes y agendamiento de citas.
 
-## Available Scripts
+## Tecnologías Utilizadas
 
-In the project directory, you can run:
+* **React (v18+)** (Librería principal para la construcción de interfaces)
+* **React Router DOM** (Enrutamiento dinámico y navegación SPA)
+* **Context API** (Gestión de estado global de la aplicación)
+* **CSS Nativo** (Estilos modulares, Flexbox y Grid sin dependencias externas)
+* **Fetch API** (Comunicación asíncrona con el backend de Spring Boot)
 
-### `npm start`
+## Arquitectura y Patrones
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+El proyecto está estructurado para maximizar la reutilización de código y la separación de responsabilidades:
+* **Contextos y Reducers (`/context`, `/reducers`):** Manejo centralizado del estado para Pacientes, Doctores, Citas y Consultorios, evitando el *prop drilling*.
+* **Custom Hooks (`/hooks`):** Lógica encapsulada y reutilizable como `useApi` para peticiones HTTP, `useModal` para ventanas emergentes y `useFilter` para búsquedas en tablas.
+* **Servicios (`/services`):** Capa de abstracción para todas las llamadas a la API REST, manteniendo los componentes limpios y enfocados en la vista.
+* **Componentes Modulares (`/components`):** Uso intensivo de modales (`BaseModal`, formularios de creación/edición) y tarjetas de estadísticas (`StatCard`) para una UI limpia.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Características Principales (Módulos)
 
-### `npm test`
+1. **Dashboard Interactiva (`/dashboard`):** Panel principal con métricas en tiempo real obtenidas desde el backend (Productividad de doctores, Cancelaciones, Citas de hoy).
+2. **Gestión de Pacientes (`/patients`):** CRUD completo con vistas detalladas y control de estado (Activo/Inactivo).
+3. **Gestión de Doctores (`/doctors`):** Administración del personal médico, asignación de especialidades y configuración de horarios de trabajo (Schedules).
+4. **Agendamiento de Citas (`/appointments`):** Sistema inteligente de reservas que valida en tiempo real la disponibilidad del doctor seleccionado cruzando su horario laboral y citas previas.
+5. **Administración de Consultorios (`/offices`):** Control de infraestructura física.
+6. **Catálogos (`/catalogs`):** Mantenimiento de tipos de citas y especialidades médicas.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Requisitos Previos
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Node.js (v16 o superior)
+* npm (Node Package Manager)
+* El backend de OMHT (Spring Boot) debe estar en ejecución.
