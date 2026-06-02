@@ -53,7 +53,7 @@ function DashboardPage(){
             <div className="reports-section">
                 
                 <div className="report-card">
-                    <h3 className="report-card-title">Doctor Productivity (Top)</h3>
+                    <h3 className="report-card-title">Doctor Productivity</h3>
                     <table className="report-table">
                         <thead>
                             <tr>
