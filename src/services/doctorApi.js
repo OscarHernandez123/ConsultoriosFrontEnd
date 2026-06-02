@@ -1,86 +1,85 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = `${process.env.REACT_APP_API_URL}/doctors`;
 
-async function requestJson(url, options = {}){
-
+async function requestJson(url, options = {}) {
     const response = await fetch(url, {
         headers: {
-            'Content-Type' : 'application/json',
+            'Content-Type': 'application/json',
             ...options.headers
         },
         ...options
     });
 
-    if(!response.ok){
+    if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    if(response.status === 204){
+    if (response.status === 204) {
         return null;
     }
 
     return response.json();
 }
 
-function toDoctor(apiDoctor){
-    return{
+function toDoctor(apiDoctor) {
+    return {
         id: String(apiDoctor.id),
-        fullName: apiDoctor.fullName, 
+        fullName: apiDoctor.fullName,
         email: apiDoctor.email,
-        specialty: apiDoctor.specialty, 
-        profile: apiDoctor.profile,
-        status: apiDoctor.status || 'Active'
+        specialty: apiDoctor.specialty ? { id: apiDoctor.specialty.id, title: apiDoctor.specialty.title } : null,
+        profile: apiDoctor.profile ? { phone: apiDoctor.profile.phone, bio: apiDoctor.profile.bio } : null
+    };
+}
+
+export async function getDoctors(page = 0, size = 50) {
+    const url = `${API_URL}?page=${page}&size=${size}`;
+    const response = await requestJson(url, { method: 'GET' });
+    
+    if (response && response.content) {
+        return response.content.map(toDoctor);
     }
+    
+    return [];
 }
 
-export async function getDoctors(){
-    const doctors = await requestJson(API_URL, {
-        method: 'GET'
-    });
-    return doctors.map(toDoctor)
-}
-
-export async function getDoctorById(doctorId){
-    const doctor = await requestJson(`${API_URL}/${doctorId}`,{
-        method: 'GET'
-    });
+export async function getDoctorById(doctorId) {
+    const doctor = await requestJson(`${API_URL}/${doctorId}`, { method: 'GET' });
     return toDoctor(doctor);
 }
 
-export async function createDoctor(doctorData){
+export async function createDoctor(doctorData) {
+    const payload = {
+        fullName: doctorData.fullName || doctorData.name,
+        email: doctorData.email,
+        specialtyId: doctorData.specialtyId || doctorData.specialty?.id,
+        profile: {
+            phone: doctorData.phone || doctorData.profile?.phone,
+            bio: doctorData.bio || doctorData.profile?.bio || "Doctor profile"
+        }
+    };
+
     const created = await requestJson(API_URL, {
         method: 'POST',
-        body: JSON.stringify(doctorData)
+        body: JSON.stringify(payload)
     });
 
-    return{
-        ...doctorData,
-        id: String(created.id)
-    }
+    return toDoctor(created);
 }
 
 export async function replaceDoctor(doctorId, doctorData) {
-    await requestJson(`${API_URL}/${doctorId}`, {
+    const payload = {
+        fullName: doctorData.fullName || doctorData.name,
+        email: doctorData.email,
+        specialtyId: doctorData.specialtyId || doctorData.specialty?.id,
+        profile: {
+            phone: doctorData.phone || doctorData.profile?.phone,
+            bio: doctorData.bio || doctorData.profile?.bio || "Doctor profile"
+        }
+    };
+
+    const updated = await requestJson(`${API_URL}/${doctorId}`, {
         method: 'PUT',
-        body: JSON.stringify(doctorData)
-    });
-    return { ...doctorData, id: String(doctorId) };
-}
-
-export async function patchDoctor(doctorId, partialData){
-    await requestJson(`${API_URL}/${doctorId}`, {
-        method: 'PATCH',
-        body: JSON.stringify(partialData)
-    });
-    return{ id: String(doctorId), ...partialData};
-}
-
-export async function getDoctorAvailability(doctorId, dateString, appointmentTypeId) {
-    const queryParams = new URLSearchParams({
-        day: dateString,
-        appointmentTypeId: appointmentTypeId
+        body: JSON.stringify(payload)
     });
     
-    return requestJson(`${API_URL}/availability/doctors/${doctorId}?${queryParams.toString()}`, {
-        method: 'GET'
-    });
+    return toDoctor(updated);
 }

@@ -1,7 +1,6 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = `${process.env.REACT_APP_API_URL}/patients`;
 
 async function requestJson(url, options = {}) {
-
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -23,60 +22,60 @@ async function requestJson(url, options = {}) {
 
 function toPatient(apiPatient) {
   return {
-    id: String(apiPatient.id), 
-    identification: `100${apiPatient.id}234567`, 
-    name: apiPatient.name,
+    id: String(apiPatient.id),
+    identification: apiPatient.identification,
+    name: apiPatient.fullName, 
     email: apiPatient.email,
-    phone: apiPatient.phone || 'No phone',
-    status: apiPatient.id % 2 === 0 ? 'Active' : 'Inactive' 
+    phone: apiPatient.phone,
+    status: apiPatient.status
   };
 }
 
-export async function getPatients() {
-  const users = await requestJson(API_URL, {
-    method: 'GET'
-  });
-  return users.map(toPatient);
+export async function getPatients(page = 0, size = 50) {
+  const url = `${API_URL}?page=${page}&size=${size}`;
+  const response = await requestJson(url, { method: 'GET' });
+  
+  if (response && response.content) {
+    return response.content.map(toPatient);
+  }
+  
+  return [];
 }
 
 export async function getPatientById(patientId) {
-  const user = await requestJson(`${API_URL}/${patientId}`, {
-    method: 'GET'
-  });
-  return toPatient(user);
+  const patient = await requestJson(`${API_URL}/${patientId}`, { method: 'GET' });
+  return toPatient(patient);
 }
 
 export async function createPatient(patientData) {
+  const payload = {
+    fullName: patientData.name || patientData.fullName,
+    phone: patientData.phone,
+    email: patientData.email,
+    identification: patientData.identification
+  };
+
   const created = await requestJson(API_URL, {
     method: 'POST',
-    body: JSON.stringify(patientData)
+    body: JSON.stringify(payload)
   });
 
-  return {
-    ...patientData,
-    id: String(created.id)
-  };
+  return toPatient(created);
 }
 
 export async function replacePatient(patientId, patientData) {
-  await requestJson(`${API_URL}/${patientId}`, {
+  const payload = {
+    fullName: patientData.name || patientData.fullName,
+    phone: patientData.phone,
+    email: patientData.email,
+    identification: patientData.identification,
+    status: patientData.status || 'ACTIVE'
+  };
+
+  const updated = await requestJson(`${API_URL}/${patientId}`, {
     method: 'PUT',
-    body: JSON.stringify(patientData)
+    body: JSON.stringify(payload)
   });
-  return { ...patientData, id: String(patientId) };
-}
-
-export async function patchPatient(patientId, partialData) {
-  await requestJson(`${API_URL}/${patientId}`, {
-    method: 'PATCH',
-    body: JSON.stringify(partialData)
-  });
-  return { id: String(patientId), ...partialData };
-}
-
-export async function deletePatient(patientId) {
-  await requestJson(`${API_URL}/${patientId}`, {
-    method: 'DELETE'
-  });
-  return { id: String(patientId), deleted: true };
+  
+  return toPatient(updated);
 }

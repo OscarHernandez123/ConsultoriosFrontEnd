@@ -31,7 +31,7 @@ function DoctorList({ doctors, openEditModal, openScheduleModal }) {
                                 </span>
                             </td>
                             <td>
-                                <span className={`status-badge ${doctor.status === 'Active' ? 'status-active' : 'status-inactive'}`}>
+                                <span className={`status-badge ${doctor.status === 'ACTIVE' ? 'status-active' : 'status-inactive'}`}>
                                     {doctor.status}
                                 </span>
                             </td>

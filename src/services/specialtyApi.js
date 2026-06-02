@@ -1,7 +1,6 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = `${process.env.REACT_APP_API_URL}/specialties`;
 
 async function requestJson(url, options = {}) {
-
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -29,20 +28,25 @@ function toSpecialty(apiSpecialty) {
 }
 
 export async function getSpecialties() {
-  const users = await requestJson(API_URL, {
-    method: 'GET'
-  });
-  return users.map(toSpecialty);
+  const response = await requestJson(API_URL, { method: 'GET' });
+  
+  if (Array.isArray(response)) {
+      return response.map(toSpecialty);
+  }
+  if (response && response.content) {
+      return response.content.map(toSpecialty);
+  }
+
+  return [];
 }
 
 export async function createSpecialty(specialtyData) {
   const created = await requestJson(API_URL, {
     method: 'POST',
-    body: JSON.stringify(specialtyData)
+    body: JSON.stringify({
+        title: specialtyData.title
+    })
   });
 
-  return {
-    ...specialtyData,
-    id: String(created.id)
-  };
+  return toSpecialty(created);
 }

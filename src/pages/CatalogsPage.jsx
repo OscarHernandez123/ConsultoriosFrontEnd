@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import { CatalogContext } from '../context/CatalogContext';
-import { useModal } from '../hooks/useModal';
-import PageHeader from '../components/PageHeader';
-import SpecialtyFormModal from '../components/catalogs/SpecialtyFormModal';
-import AppointmentTypeFormModal from '../components/catalogs/AppointmentTypeFormModal';
+import { useContext } from "react";
+import { CatalogContext } from "../context/CatalogContext";
+import PageHeader from "../components/PageHeader";
+import { useModal } from "../hooks/useModal";
+import SpecialtyFormModal from "../components/catalogs/SpecialtyFormModal";
+import AppointmentTypeFormModal from "../components/catalogs/AppointmentTypeFormModal";
 
 function CatalogsPage() {
     const { catalogs } = useContext(CatalogContext);
@@ -49,9 +49,6 @@ function CatalogsPage() {
                                     <h4>{spec.title}</h4>
                                     <p>Code: {getInitials(spec.title)}</p>
                                 </div>
-                                <button className="btn-delete" title="Delete">
-                                    🗑️
-                                </button>
                             </div>
                         ))}
                         {specialties.length === 0 && (
@@ -84,9 +81,6 @@ function CatalogsPage() {
                                 <div className="time-pill">
                                     {type.durationMinutes} min
                                 </div>
-                                <button className="btn-delete" title="Delete">
-                                    🗑️
-                                </button>
                             </div>
                         ))}
                         {appointmentTypes.length === 0 && (

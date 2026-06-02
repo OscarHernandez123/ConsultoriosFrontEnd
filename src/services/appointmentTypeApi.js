@@ -1,7 +1,6 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = `${process.env.REACT_APP_API_URL}/appointment-types`;
 
 async function requestJson(url, options = {}) {
-
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -30,20 +29,26 @@ function toAppointmentType(apiAppointmentType) {
 }
 
 export async function getAppointmentTypes() {
-  const users = await requestJson(API_URL, {
-    method: 'GET'
-  });
-  return users.map(toAppointmentType);
+  const response = await requestJson(API_URL, { method: 'GET' });
+  
+  if (Array.isArray(response)) {
+      return response.map(toAppointmentType);
+  }
+  if (response && response.content) {
+      return response.content.map(toAppointmentType);
+  }
+  
+  return [];
 }
 
 export async function createAppointmentType(appointmentTypeData) {
   const created = await requestJson(API_URL, {
     method: 'POST',
-    body: JSON.stringify(appointmentTypeData)
+    body: JSON.stringify({
+        title: appointmentTypeData.title,
+        durationMinutes: parseInt(appointmentTypeData.durationMinutes, 10)
+    })
   });
 
-  return {
-    ...appointmentTypeData,
-    id: String(created.id)
-  };
+  return toAppointmentType(created);
 }

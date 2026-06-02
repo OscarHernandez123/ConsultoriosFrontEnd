@@ -20,21 +20,47 @@ async function requestJson(url, options = {}) {
     return response.json();
 }
 
+function toOffice(apiOffice) {
+    return {
+        id: String(apiOffice.id),
+        location: apiOffice.location,
+        status: apiOffice.status || 'ACTIVE'
+    };
+}
+
 export async function getOffices(page = 0, size = 50) {
     const url = `${API_URL}?page=${page}&size=${size}`;
-    return requestJson(url, { method: 'GET' });
+    const response = await requestJson(url, { method: 'GET' });
+    
+    if (response && response.content) {
+        return response.content.map(toOffice);
+    }
+    
+    return [];
+}
+
+export async function getOfficeById(id) {
+    const office = await requestJson(`${API_URL}/${id}`, { method: 'GET' });
+    return toOffice(office);
 }
 
 export async function createOffice(officeData) {
-    return requestJson(API_URL, {
+    const created = await requestJson(API_URL, {
         method: 'POST',
-        body: JSON.stringify(officeData)
+        body: JSON.stringify({
+            location: officeData.location
+        })
     });
+    return toOffice(created);
 }
 
 export async function replaceOffice(id, officeData) {
-    return requestJson(`${API_URL}/${id}`, {
+    const updated = await requestJson(`${API_URL}/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(officeData)
+        body: JSON.stringify({
+            location: officeData.location,
+            status: officeData.status
+        })
     });
+    return toOffice(updated);
 }

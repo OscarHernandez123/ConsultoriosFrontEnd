@@ -38,6 +38,8 @@
   --color-success-fg:  #166534;
   --color-inactive-bg: #f1f5f9;
   --color-inactive-fg: #475569;
+  --color-maintenance-bg: #fff1a0;
+  --color-maintenance-fg: #e2d028;
   --color-error-bg:    #fee2e2;
   --color-error-fg:    #991b1b;
 
@@ -591,6 +593,11 @@ body {
   color: var(--color-inactive-fg);
 }
 
+.status-maintenance{
+  background-color: var(--color-maintenance-bg);
+  color: var(--color-maintenance-fg)
+}
+
 /* ── Action buttons ────────────────────────────────────────── */
 .action-buttons {
   display: flex;
@@ -1027,3 +1034,46 @@ body {
     padding: 20px;
     font-style: italic;
 }
+
+/* ── Appointment date cell ─────────────────────────────────── */
+.date-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.date-main {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+}
+
+.date-time {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+/* ── Status overrides for appointments ─────────────────────── */
+.status-noshow {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+/* ── Appointment action buttons ────────────────────────────── */
+.btn-apt {
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 5px 10px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+    white-space: nowrap;
+}
+
+.btn-apt:hover { opacity: 0.75; }
+
+.btn-apt-complete { background-color: var(--color-blue-light);  color: var(--color-blue); }
+.btn-apt-noshow   { background-color: #fef3c7;                  color: #b45309; }
+.btn-apt-cancel   { background-color: var(--color-error-bg);    color: var(--color-error-fg); }

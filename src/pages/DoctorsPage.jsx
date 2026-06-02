@@ -49,7 +49,7 @@ function DoctorsPage(){
             );
 
             if(updatedDoctor){
-                loadDoctors();
+                dispatch({ type: 'UPDATE_DOCTOR', payload: updatedDoctor });
                 formModal.closeModal();
             }
         } else {
@@ -59,7 +59,7 @@ function DoctorsPage(){
             );
 
             if(createdDoctor){
-                loadDoctors();
+                dispatch({ type: 'ADD_DOCTOR', payload: createdDoctor });
                 formModal.closeModal();
             }
         }

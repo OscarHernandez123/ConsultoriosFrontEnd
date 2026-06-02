@@ -50,13 +50,20 @@ function DoctorFormModal({ isOpen, onClose, onSaveDoctor, doctorToEdit}){
             return;
         }
 
+        const selectedSpecialty = specialties.find(s => String(s.id) === String(formData.specialtyId)); //!!!
+        const specialtyName = selectedSpecialty ? selectedSpecialty.title : 'General'; //!!!
+
         const payload = {
-            id: formData.id,
             fullName: formData.name,
             email: formData.email,
             specialtyId: formData.specialtyId,
+            specialtyTitle: specialtyName, //!!!
             status: formData.status
         };
+
+        if (isEditing) {
+            payload.id = formData.id;
+        }
 
         onSaveDoctor(payload);
     }
