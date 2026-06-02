@@ -3,7 +3,7 @@ function Topbar(){
     return(
         <header className = "topbar">
             <div>
-                <h2>Overview</h2>
+                <h2>Patients</h2>
             </div>
 
             <div className = "user-profile">
