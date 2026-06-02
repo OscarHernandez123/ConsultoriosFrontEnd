@@ -2,40 +2,31 @@ const API_URL = `${process.env.REACT_APP_API_URL}/offices`;
 
 async function requestJson(url, options = {}) {
     const response = await fetch(url, {
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        },
+        headers: { 'Content-Type': 'application/json', ...options.headers },
         ...options
     });
-
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    if (response.status === 204) {
-        return null;
-    }
-
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    if (response.status === 204) return null;
     return response.json();
 }
 
 function toOffice(apiOffice) {
+    let formattedStatus = 'Active';
+    if (apiOffice.status === 'INACTIVE') formattedStatus = 'Inactive';
+    if (apiOffice.status === 'MAINTENANCE') formattedStatus = 'Maintenance';
+
     return {
         id: String(apiOffice.id),
         location: apiOffice.location,
-        status: apiOffice.status || 'ACTIVE'
+        name: apiOffice.name,
+        status: formattedStatus
     };
 }
 
 export async function getOffices(page = 0, size = 50) {
     const url = `${API_URL}?page=${page}&size=${size}`;
     const response = await requestJson(url, { method: 'GET' });
-    
-    if (response && response.content) {
-        return response.content.map(toOffice);
-    }
-    
+    if (response && response.content) return response.content.map(toOffice);
     return [];
 }
 
@@ -48,6 +39,7 @@ export async function createOffice(officeData) {
     const created = await requestJson(API_URL, {
         method: 'POST',
         body: JSON.stringify({
+            name: officeData.name || "Main Office",
             location: officeData.location
         })
     });
@@ -58,8 +50,9 @@ export async function replaceOffice(id, officeData) {
     const updated = await requestJson(`${API_URL}/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
+            name: officeData.name,
             location: officeData.location,
-            status: officeData.status
+            status: (officeData.status || 'Active').toUpperCase()
         })
     });
     return toOffice(updated);

@@ -13,6 +13,7 @@ function DoctorFormModal({ isOpen, onClose, onSaveDoctor, doctorToEdit}){
         id: '',
         name: '',
         email: '',
+        phone: '', 
         specialtyId: '',
         status: 'Active'
     });
@@ -23,6 +24,7 @@ function DoctorFormModal({ isOpen, onClose, onSaveDoctor, doctorToEdit}){
                 id: doctorToEdit.id || '',
                 name: doctorToEdit.fullName || '',
                 email: doctorToEdit.email || '',
+                phone: doctorToEdit.profile?.phone || '', 
                 specialtyId: doctorToEdit.specialty ? doctorToEdit.specialty.id : '',
                 status: doctorToEdit.status 
             });
@@ -31,6 +33,7 @@ function DoctorFormModal({ isOpen, onClose, onSaveDoctor, doctorToEdit}){
                 id: '',
                 name: '',
                 email: '',
+                phone: '', 
                 specialtyId: '',
                 status: 'Active'
             });
@@ -43,22 +46,22 @@ function DoctorFormModal({ isOpen, onClose, onSaveDoctor, doctorToEdit}){
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        if(!formData.name || !formData.email || !formData.specialtyId){
-            alert('Please fill the required fields');
+        if(!formData.name || !formData.email || !formData.phone || !formData.specialtyId){
+            alert('Please fill all the required fields');
             return;
         }
-
-        const selectedSpecialty = specialties.find(s => String(s.id) === String(formData.specialtyId)); //!!!
-        const specialtyName = selectedSpecialty ? selectedSpecialty.title : 'General'; //!!!
 
         const payload = {
             fullName: formData.name,
             email: formData.email,
-            specialtyId: formData.specialtyId,
-            specialtyTitle: specialtyName, //!!!
-            status: formData.status
+            specialtyId: String(formData.specialtyId), 
+            status: (formData.status || 'ACTIVE').toUpperCase(),
+            profile: {
+                phone: formData.phone,
+                bio: "Medical professional" 
+            }
         };
 
         if (isEditing) {
@@ -84,20 +87,34 @@ function DoctorFormModal({ isOpen, onClose, onSaveDoctor, doctorToEdit}){
                         />
                     </div>
 
-                    <div className = "form-group">
-                        <label className = "form-label">Email Address<span>*</span></label>
-                        <input
-                            type = "text"
-                            name = "email"
-                            className = "form-input-modal"
-                            placeholder = "email@uni.edu.co"
-                            value = {formData.email}
-                            onChange = {handleChange}
-                        />                       
+                    <div className="form-row">
+                        <div className = "form-group">
+                            <label className = "form-label">Email Address<span>*</span></label>
+                            <input
+                                type = "text"
+                                name = "email"
+                                className = "form-input-modal"
+                                placeholder = "email@uni.edu.co"
+                                value = {formData.email}
+                                onChange = {handleChange}
+                            />                       
+                        </div>
+
+                        <div className = "form-group">
+                            <label className = "form-label">Phone<span>*</span></label>
+                            <input
+                                type = "text"
+                                name = "phone"
+                                className = "form-input-modal"
+                                placeholder = "3001234567"
+                                value = {formData.phone}
+                                onChange = {handleChange}
+                            />                       
+                        </div>
                     </div>
 
                     <div className = "form-group">
-                        <label className = "form-label">Specialty</label>
+                        <label className = "form-label">Specialty<span>*</span></label>
                         <select
                             name = "specialtyId"
                             className = "form-input-modal"

@@ -15,7 +15,6 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
     
     const appointmentTypes = catalogs?.appointmentTypes || [];
 
-    // Declaración del estado para los horarios
     const [availableSlots, setAvailableSlots] = useState([]);
 
     const [formData, setFormData] = useState({
@@ -114,7 +113,13 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
                     
                     <div className="form-group">
                         <label className="form-label">Patient *</label>
-                        <select name="patientId" value={formData.patientId} onChange={handleChange} required>
+                        <select 
+                            name="patientId" 
+                            className="form-input-modal" 
+                            value={formData.patientId} 
+                            onChange={handleChange} 
+                            required
+                        >
                             <option value="">Select a patient...</option>
                             {patients.map(p => (
                                 <option key={p.id} value={p.id}>{p.name}</option>
@@ -124,7 +129,13 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
 
                     <div className="form-group">
                         <label className="form-label">Doctor *</label>
-                        <select name="doctorId" value={formData.doctorId} onChange={handleChange} required>
+                        <select 
+                            name="doctorId" 
+                            className="form-input-modal" 
+                            value={formData.doctorId} 
+                            onChange={handleChange} 
+                            required
+                        >
                             <option value="">Select a doctor...</option>
                             {doctors.map(d => (
                                 <option key={d.id} value={d.id}>{d.fullName}</option>
@@ -135,7 +146,12 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
                     <div className="form-row">
                         <div className="form-group">
                             <label className="form-label">Office</label>
-                            <select name="officeId" value={formData.officeId} onChange={handleChange}>
+                            <select 
+                                name="officeId" 
+                                className="form-input-modal" 
+                                value={formData.officeId} 
+                                onChange={handleChange}
+                            >
                                 <option value="">Select an office...</option>
                                 {offices.map(o => (
                                     <option key={o.id} value={o.id}>{o.name}</option>
@@ -144,7 +160,12 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
                         </div>
                         <div className="form-group">
                             <label className="form-label">Type</label>
-                            <select name="appointmentTypeId" value={formData.appointmentTypeId} onChange={handleChange}>
+                            <select 
+                                name="appointmentTypeId" 
+                                className="form-input-modal" 
+                                value={formData.appointmentTypeId} 
+                                onChange={handleChange}
+                            >
                                 <option value="">Select type...</option>
                                 {appointmentTypes.map(t => (
                                     <option key={t.id} value={t.id}>{t.title}</option>
@@ -156,12 +177,20 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
                     <div className="form-row">
                         <div className="form-group">
                             <label className="form-label">Date *</label>
-                            <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+                            <input 
+                                type="date" 
+                                name="date" 
+                                className="form-input-modal" 
+                                value={formData.date} 
+                                onChange={handleChange} 
+                                required 
+                            />
                         </div>
                         <div className="form-group">
                             <label className="form-label">Time *</label>
                             <select 
                                 name="time" 
+                                className="form-input-modal" 
                                 value={formData.time} 
                                 onChange={handleChange} 
                                 required
@@ -177,7 +206,13 @@ function AppointmentFormModal({ isOpen, onClose, onSaveAppointment }) {
 
                     <div className="form-group">
                         <label className="form-label">Notes (Optional)</label>
-                        <textarea name="notes" rows="3" value={formData.notes} onChange={handleChange}></textarea>
+                        <textarea 
+                            name="notes" 
+                            rows="3" 
+                            className="form-input-modal" 
+                            value={formData.notes} 
+                            onChange={handleChange}
+                        ></textarea>
                     </div>
 
                 </div>

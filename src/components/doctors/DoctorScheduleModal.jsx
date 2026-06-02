@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import BaseModal from '../BaseModal';
-import { getDoctorAvailability } from '../../services/doctorApi';
+import { getDoctorAvailability } from '../../services/availabilityApi';
 
 function DoctorScheduleModal({ isOpen, onClose, doctor, appointmentTypeId }) {
     const [scheduleMap, setScheduleMap] = useState({});
